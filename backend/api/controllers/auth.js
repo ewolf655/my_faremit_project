@@ -18,22 +18,22 @@ const verifyToken = (token) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { name, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!name || !password) {
+    if (!email || !password) {
       return res.status(400).json({
         status: "fail",
-        message: "Enter username and password",
+        message: "Enter email and password",
       });
     }
 
-    const userData = await User.findOne({ name }).select("+password");
+    const userData = await User.findOne({ email }).select("+password");
     console.log(userData);
 
     if (!userData) {
       return res.status(401).json({
         status: "fail",
-        message: "Invalid username or password",
+        message: "Invalid Email or password",
       });
     }
 
@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
 exports.register = async (req, res, next) => {
   try {
     const {
-      name,
+      // name,
       phone,
       password,
       Email,
@@ -119,7 +119,7 @@ exports.register = async (req, res, next) => {
     }
 
     const userData = await User.create({
-      name,
+      // name,
       password,
       phone,
       Email,

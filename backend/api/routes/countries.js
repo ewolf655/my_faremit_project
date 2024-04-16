@@ -11,7 +11,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // router.delete('/country/:id',authController.protect, authController.restrictTo("admin"),countriesController.deleteCountryById);
 router.get(
   "/country",
-  authController.protect,
+  // authController.protect,
   countriesController.getAllCountries
 );
 router.get("/country/:id", countriesController.getCountryById);
@@ -23,13 +23,13 @@ router.post(
 );
 router.put(
   "/country/:id",
-  authController.protect,
+  // authController.protect,
   upload.single("countryImage"),
   countriesController.updateCountryById
 );
 router.delete(
   "/country/:id",
-  authController.protect,
+  // authController.protect,
   countriesController.deleteCountryById
 );
 

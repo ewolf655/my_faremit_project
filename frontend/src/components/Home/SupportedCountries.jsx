@@ -135,10 +135,10 @@ function SupportedCountries() {
     };
 
     return (
-        <div className="flex relative flex-col bg-[#F7F6FD] sm:mb-80 overflow-hidden lg:mb-24 w-full max-h-screen">
+        <div className="flex pb-10 relative flex-col bg-[#F7F6FD] sm:mb-80 overflow-hidden lg:mb-24 w-full max-h-screen">
             {/* top */}
-            <div className=" flex-col justify-center items-center text-center w-full">
-                <h1>Beyond Borders, Beyond Limits</h1>
+            <div className=" flex-col justify-center pt-10 font-normal space-y-5 items-center text-center w-full">
+                <h1 className="text-4xl font-medium">Beyond Borders, Beyond Limits</h1>
                 <p>Transfers made easy to over 150 countries.</p>
             </div>
             {/* top center */}
@@ -147,29 +147,31 @@ function SupportedCountries() {
                     <>
                         {" "}
                         <div
-                            className="flex items-center cursor-pointer space-x-2  justify-center  h-10 px-5 py-5 rounded-xl border border-Grey-500"
+                            className="flex gap-4 px-4 py-2 whitespace-nowrap border border-solid border-zinc-300 rounded-[88px]"
                             onClick={() => handleContinentClick(continent)}
                         >
                             <img
+                                loading="lazy"
                                 src={continentData[continent].image}
                                 alt={continent}
-                                className="w-4 h-4"
+                                className="shrink-0 my-auto w-6 aspect-square"
                             />
                             <h4>{continent}</h4>
-                        </div>
+                        </div>{" "}
                     </>
                 ))}
             </div>
 
             {/* bottom */}
-            <div className="flex   flex-wrap md:justify-center max-w-7xl mx-auto space-y-5  items-center   space-x-2 ">
+            <div className="flex  mb-96 flex-wrap md:justify-center max-w-7xl mx-auto space-y-5  items-center   space-x-2 ">
                 {continentData[selectedContinent].countries.map(({ name, code }) => (
                     <>
-                        <div className="flex items-center space-x-2  justify-center mt-5  h-10 px-5 py-5 rounded-xl border border-Grey-500">
-                            <div className="rounded-full mt-1.5 w-6 h-6">
-                                <Flag code={code} height="16" />
-                            </div>
-
+                        <div className="flex  items-center gap-4 px-4 py-2 border border-solid border-zinc-300 rounded-[88px]">
+                            <Flag
+                                code={code}
+                                height="15"
+                                className="shrink-0 my-auto w-6 aspect-square"
+                            />
                             <span>{name}</span>
                         </div>
                     </>

@@ -1,4 +1,20 @@
-import React from "react";
+import * as React from "react";
+
+const PaymentMethodCard = ({ title, description, imageSrc, bgColor }) => (
+    <div className="flex flex-col grow justify-center max-md:mt-7">
+        <div className={`flex flex-col px-6 py-10 ${bgColor}  rounded-xl max-md:px-5`}>
+            <h3 className="text-2xl font-semibold tracking-wide leading-8 text-slate-900">
+                {title}
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-neutral-600">{description}</p>
+            <img
+                src={imageSrc}
+                alt={title}
+                className="self-center mt-8 max-w-full aspect-square w-[120px]"
+            />
+        </div>
+    </div>
+);
 
 const paymentMethods = [
     {
@@ -7,7 +23,7 @@ const paymentMethods = [
             "Use your debit card to send money in a snap. It’s fast, secure, and straightforward.",
         bgColor: "bg-[#F5F4FD]",
         icon: "/images/debit-card.png", // replace with your actual icon path
-        comingSoon: true
+        comingSoon: false
     },
     {
         title: "Bank Transfers",
@@ -15,7 +31,7 @@ const paymentMethods = [
             "Link your bank account and send money easily. It’s fast, secure, and straightforward",
         bgColor: "bg-[#D6D4F780]",
         icon: "/images/bank_transfer.png", // replace with your actual icon path
-        comingSoon: false
+        comingSoon: true
     },
     {
         title: "Credit Card",
@@ -23,45 +39,40 @@ const paymentMethods = [
             "Use your credit card to send money in a snap. It’s fast, secure, and straightforward",
         bgColor: "bg-[#EEEDFC99]",
         icon: "/images/credit-card.png", // replace with your actual icon path
-        comingSoon: true
+        comingSoon: false
     }
 ];
-
-const PaymentMethodCard = ({ title, description, bgColor, icon, comingSoon }) => {
+function PaymentMenthods() {
     return (
-        <div
-            className={`flex flex-col justify-between space-y-6 items-center p-6 rounded-lg shadow-lg m-2 ${bgColor} relative`}
-        >
-            {comingSoon && (
-                <span className="absolute rotate-45 top-2 right-2 bg-purple-200 text-purple-800 py-1 px-2 rounded-full text-xs">
-                    Coming soon
-                </span>
-            )}
-            {/* Ensure you have these icons in your project */}
-            <h3 className="font-semibold mb-2">{title}</h3>
-            <p className="text-sm text-center text-gray-500">{description}</p>
-            <img src={icon} alt={title} className=" w-32 h-32 object-fit" />
-        </div>
-    );
-};
-
-const PaymentMethods = () => {
-    return (
-        <div className="py-10 px-5 mb-10 md:px-10 bg-white">
-            <h1 className="text-3xl font-bold text-center mb-5  ">
-                <span className="bg-blue-100 p-3 rounded-md ">Our payment methods</span>
-            </h1>
-            <p className="text-center mb-10">
-                We are constantly working to introduce a variety of payment methods that are
-                perfectly suited to you, wherever you are, across the world.
-            </p>
-            <div className="grid  md:grid-cols-3 max-w-5xl mx-auto  md:flex-row md:flex-wrap md:justify-center gap-4">
-                {paymentMethods.map((method, index) => (
-                    <PaymentMethodCard key={index} {...method} />
-                ))}
+        <section className="flex justify-center items-center px-16 py-20 bg-white max-md:px-5">
+            <div className="flex flex-col items-center mt-10 w-full max-w-[1001px] max-md:max-w-full">
+                <h2 className="justify-center py-2 text-5xl font-medium text-[#4b0082] rounded bg-[#ee82ee] bg-opacity-50 leading-[63.84px] max-md:max-w-full max-md:text-4xl">
+                    Our payment methods
+                </h2>
+                <p className="mt-3 text-xl tracking-wider leading-8 text-center text-slate-700 max-md:max-w-full">
+                    We are constantly working to introduce a variety of payment methods that are
+                    perfectly suited to you, wherever you are, across the world.
+                </p>
+                <div className="self-stretch mt-14 max-md:mt-10 max-md:max-w-full">
+                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+                        {paymentMethods.map((method, index) => (
+                            <div
+                                key={index}
+                                className={`flex flex-col w-[33%] max-md:ml-0 max-md:w-full ${method.bgColor}`}
+                            >
+                                <PaymentMethodCard
+                                    title={method.title}
+                                    description={method.description}
+                                    imageSrc={method.icon}
+                                    bgColor={method.bgColor}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     );
-};
+}
 
-export default PaymentMethods;
+export default PaymentMenthods;

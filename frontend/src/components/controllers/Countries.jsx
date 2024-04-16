@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import PhoneInput1 from "react-phone-input-2";
 import Select from "react-select";
 import "react-phone-input-2/lib/style.css"; // Import isValidNumber and format from libphonenumber-js
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 export const CitySelect = ({ selectedCountry, selectedCity, setSelectedCity, error }) => {
     const [cityOptions, setCityOptions] = useState([]);
@@ -54,7 +53,13 @@ export const CitySelect = ({ selectedCountry, selectedCity, setSelectedCity, err
     );
 };
 export const CountrySelect = ({ selectedCountry, setSelectedCountry, error, SendingCountries }) => {
-    const [countries, setCountries] = useState([]);
+    const [countries, setCountries] = useState([
+        {
+            name: "Canada",
+            code: "+1",
+            flag: "https://hatscripts.github.io/circle-flags/flags/ca.svg"
+        }
+    ]);
     const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
     useEffect(() => {
@@ -102,15 +107,6 @@ export const CountrySelect = ({ selectedCountry, setSelectedCountry, error, Send
 export const PhoneNumberInput = ({ selectedCountry, phoneNumber, setPhoneNumber }) => {
     const con = selectedCountry ? selectedCountry.value.toLowerCase() : "";
 
-    // Function to format the phone number with the country code
-    const formatPhoneNumberWithCountryCode = (countryCode, number) => {
-        if (!number) {
-            return "";
-        }
-        // Add the '+' symbol and the country code to the phone number
-        return `+${countryCode}${number}`;
-    };
-
     const validatePhoneNumber = number => {
         // Replace this with your validation logic based on the selected country
         // You can use regular expressions or country-specific validation rules
@@ -126,16 +122,15 @@ export const PhoneNumberInput = ({ selectedCountry, phoneNumber, setPhoneNumber 
     };
 
     // Format the phone number with the country code for display
-    const formattedPhoneNumber = formatPhoneNumberWithCountryCode(con, phoneNumber);
 
     return (
         <>
-            <PhoneInput1
-                country={con}
-                value={formattedPhoneNumber} // Display the formatted number
-                inputStyle={{ width: "100%" }}
+            <PhoneInput
+                international
+                countryCallingCodeEditable={false}
+                defaultCountry="RU"
+                value={phoneNumber}
                 onChange={handlePhoneNumberChange}
-                disableDropdown
             />
         </>
     );
@@ -145,12 +140,6 @@ export const PhoneNumberInput1 = ({ selectedCountry, setPhoneNumber, setValue })
 
     const handlePhoneInputChange = newValue => {
         if (typeof newValue === "string") {
-            if (isValidPhoneNumber(newValue)) {
-                setValue(false);
-                setPhoneNumber(newValue);
-            } else {
-                setValue(true);
-            }
         } else {
             // Handle cases where newValue is not a string
             console.error("Input is not a string");
@@ -168,3 +157,117 @@ export const PhoneNumberInput1 = ({ selectedCountry, setPhoneNumber, setValue })
         </>
     );
 };
+
+export function CountryDropdown({ selectedCountry, setSelectedCountry, countries }) {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const handleCountrySelect = country => {
+        setSelectedCountry(country);
+        setIsOpen(false);
+    };
+
+    function Flag({ country, flagUrl }) {
+        return (
+            <div className="flex gap-2">
+                <img src={flagUrl} alt={`${country} flag`} className="shrink-0 w-6 aspect-square" />
+                <div className="my-auto">{country}</div>
+            </div>
+        );
+    }
+
+    // Set default country
+    const defaultCountry = selectedCountry || countries[0]; // Use the first country as default if selectedCountry is not set
+
+    return (
+        <div className="relative mt-1">
+            <div
+                className="flex justify-between items-center p-3 w-full text-sm bg-white rounded-md border border-gray-300 cursor-pointer"
+                onClick={toggleDropdown}
+            >
+                <Flag country={defaultCountry.name} flagUrl={defaultCountry.flag} />
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            </div>
+            {isOpen && (
+                <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg">
+                    {countries.map(country => (
+                        <div
+                            key={country.code}
+                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            onClick={() => handleCountrySelect(country)}
+                        >
+                            <img
+                                src={country.flag}
+                                alt={`${country.name} flag`}
+                                className="shrink-0 w-6 aspect-square"
+                            />
+                            <div>{country.name}</div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+export function TextInput({ label, placeholder, handleChange, value }) {
+    console.log(value);
+    return (
+        <div className="mt-2">
+            <label className="text-sm text-gray-700 font-semibold">
+                {label} <span className="text-red-500">*</span>
+            </label>
+            <div className="relative mt-2">
+                <input
+                    className={`transition-all duration-300 py-2.5 px-4 w-full 
+                             border-secondary focus:border-indigo-500 focus:ring-indigo-500/20
+                             rounded-md text-sm placeholder-gray-400 focus:ring`}
+                    value={value}
+                    name={label.toLowerCase()} // Use label directly
+                    onChange={handleChange}
+                    placeholder={placeholder}
+                />
+            </div>
+        </div>
+    );
+}
+
+export function PhoneInput({ selectedCountry, handleChange, value }) {
+    console.log(value);
+    return (
+        <div className="flex flex-col justify-center w-full text-sm bg-white rounded-md border border-secondary border-solid">
+            <div className="flex gap-2">
+                <div className="flex gap-2 whitespace-nowrap text-slate-900">
+                    <div className="my-auto">{selectedCountry.code}</div>
+                </div>
+                <div className="flex-1 my-auto text-gray-400">
+                    <label htmlFor="phoneNumber" className="sr-only">
+                        Enter phone number
+                    </label>
+                    <input
+                        type="tel"
+                        name="phoneNumber"
+                        placeholder="Enter phone number"
+                        value={value}
+                        onChange={handleChange}
+                        className="w-full bg-transparent focus:outline-none"
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}

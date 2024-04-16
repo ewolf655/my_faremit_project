@@ -4,13 +4,17 @@ const Mailgen = require("mailgen");
 async function sendVerificationEmail(_email, _otp) {
   try {
     let config = {
-      host: "smtp.gmail.com", // GoDaddy SMTP server address
-      port: 587,
+      host: "smtpout.secureserver.net", // GoDaddy SMTP server address
+      port: 465,
+      secure: true, // true for 465, false for other ports
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
     };
+
+    console.log(process.env.MAIL_USER);
+    console.log(process.env.MAIL_PASS);
     let transporter = nodemailer.createTransport(config);
 
     let MailGenerator = new Mailgen({
