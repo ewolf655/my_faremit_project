@@ -6,7 +6,7 @@ import { Auth, Guest } from "./middlewares";
 import ContactUs from "./pages/Contact";
 import Footer from "./pages/Footer";
 import Home from "./pages/Home";
-import USAPatriot from "./pages/Legal/ USAPatriot";
+import USAPatriot from "./pages/Legal/USAPatriot";
 import Consent from "./pages/Legal/Consent";
 import Privacy from "./pages/Legal/Privacy";
 import MultiStep from "./pages/MultiStep";
